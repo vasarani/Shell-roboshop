@@ -31,10 +31,18 @@ VALIDATE $? "Disabling NodeJS Default version"
 dnf module enable nodejs:20 -y &>>$logs_file
 VALIDATE $? "Enabling NodeJS 20"
 
-useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
-VALIDATE $? "Creating the system user"
+dnf install nodejs -y &>>$logs_file
+VALIDATE $? "Install NodeJS"
 
-mkdir /app
+id roboshop &>>$logs_file
+if [ $? -ne 0 ]; then
+    useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
+    VALIDATE $? "Creating the system user"
+else
+    echo -e "Roboshop user already exist... $Y SKKIPIMG $N"
+fi 
+
+mkdir -p /app
 VALIDATE $? "Creating the app directory"
 
 curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip &>>$logs_file

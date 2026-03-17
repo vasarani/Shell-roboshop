@@ -61,7 +61,7 @@ VALIDATE $? "Installing and Building Shipping"
 mv target/shipping-1.0.jar shipping.jar
 VALIDATE $? "Moving and renaming shipping"
 
-cp $script_dir/1shipping.service /etc/systemd/system/1shipping.service
+cp $script_dir/1shipping.service /etc/systemd/system/shipping.service
 VALIDATE $? "Created systemctl service"
 
 dnf install mysql -y &>>$logs_file
@@ -78,6 +78,7 @@ else
     echo -e "data is already loaded ... $Y SKIPPING $N"
 fi
 
+systemctl daemon-reload
 systemctl enable shipping &>>$logs_file
 systemctl start shipping
 VALIDATE $? "Enabled and started shipping"

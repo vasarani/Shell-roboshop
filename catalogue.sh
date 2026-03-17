@@ -9,6 +9,7 @@ N="\e[0m"
 userid=$(id -u)
 logs_folder="/var/log/shell-roboshop"
 logs_file="$logs_folder/$0.logs"
+script_dir=$PWD
 
 if [ $userid -ne 0 ]; then
  echo -e "$R Please run this script with the root user access $N" | tee -a $logs_file
@@ -108,7 +109,7 @@ VALIDATE $? "Uzip catalogue code"
 npm install  &>>$logs_file
 VALIDATE $? "Installing dependencies"
 
-cp $SCRIPT_DIR/catalogue.service /etc/systemd/system/catalogue.service
+cp $script_dir/catalogue.service /etc/systemd/system/catalogue.service
 VALIDATE $? "Created systemctl service"
 
 systemctl daemon-reload

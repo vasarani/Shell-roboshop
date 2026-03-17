@@ -9,7 +9,8 @@ N="\e[0m"
 userid=$(id -u)
 logs_folder="/var/log/shell-roboshop"
 logs_file="$logs_folder/$0.logs"
-musql_host=mysql.rawsd.in
+mysql_host=mysql.rawsd.in
+script_dir=$PWD
 
 if [ $userid -ne 0 ]; then
  echo -e "$R Please run this script with the root user access $N" | tee -a $logs_file

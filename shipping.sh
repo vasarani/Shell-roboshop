@@ -80,7 +80,7 @@ fi
 
 systemctl daemon-reload
 systemctl enable shipping &>>$logs_file
-systemctl start shipping
+systemctl restart shipping
 VALIDATE $? "Enabled and started shipping"
 
 

@@ -30,6 +30,15 @@ VALIDATE(){
 dnf install maven -y &>>$logs_file
 VALIDATE $? "Installing maven"
 
+id roboshop &>>$logs_file
+if [ $? -ne 0 ]; then
+    useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>>$logs_file
+    VALIDATE $? "Creating system user"
+else
+    echo -e "Roboshop user already exist ... $Y SKIPPING $N"
+fi
+
+
 mkdir -p /app 
 VALIDATE $? "Creating app directory"
 
@@ -55,7 +64,7 @@ VALIDATE $? "Moving and renaming shipping"
 cp $script_dir/shipping.service /etc/systemd/system/shipping.service
 VALIDATE $? "Created systemctl service"
 
-dnf install mysql -y
+dnf install mysql -y &>>$logs_file
 VALIDATE $? "Installing Mysql"
 
 mysql -h $mysql_host -uroot -pRoboShop@1 -e 'use cities'
